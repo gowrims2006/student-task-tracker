@@ -2,21 +2,30 @@ import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
-  // Step 8 & 9: Local Storage + useEffect
   const [tasks, setTasks] = useState(() => {
     const saved = localStorage.getItem('tasks')
     return saved? JSON.parse(saved) : []
   })
   
   const [input, setInput] = useState('')
-  const [filter, setFilter] = useState('all') // all, pending, completed
+  const [filter, setFilter] = useState('all')
+  
+  // BONUS: Dark Mode State
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem('darkMode') === 'true'
+  })
 
-  // Auto save to localStorage when tasks change
+  // Auto save tasks
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks))
   }, [tasks])
 
-  // Step 6: App Logic - addTask
+  // Auto save dark mode preference
+  useEffect(() => {
+    localStorage.setItem('darkMode', darkMode)
+    document.body.className = darkMode? 'dark' : 'light'
+  }, [darkMode])
+
   const addTask = () => {
     if(input.trim()) {
       setTasks([...tasks, { 
@@ -28,30 +37,35 @@ function App() {
     }
   }
 
-  // Step 6: deleteTask
   const deleteTask = (id) => {
     setTasks(tasks.filter(task => task.id!== id))
   }
 
-  // Step 6: toggleTask - Complete feature
   const toggleTask = (id) => {
     setTasks(tasks.map(task => 
       task.id === id? {...task, completed:!task.completed } : task
     ))
   }
 
-  // Step 7: Filtering logic
   const filteredTasks = tasks.filter(task => {
     if(filter === 'completed') return task.completed
     if(filter === 'pending') return!task.completed
-    return true // all
+    return true
   })
 
   return (
-    <div className="app">
-      <h1>📚 Student Task Tracker</h1>
+    <div className={`app ${darkMode? 'dark' : 'light'}`}>
+      <div className="header">
+        <h1>📚 Student Task Tracker</h1>
+        {/* BONUS: Dark Mode Toggle */}
+        <button 
+          className="theme-toggle"
+          onClick={() => setDarkMode(!darkMode)}
+        >
+          {darkMode? '☀️ Light' : '🌙 Dark'}
+        </button>
+      </div>
       
-      {/* TaskForm Logic */}
       <div className="task-form">
         <input 
           value={input}
@@ -62,7 +76,6 @@ function App() {
         <button onClick={addTask}>Add Task</button>
       </div>
 
-      {/* Step 7: Filter Buttons */}
       <div className="filters">
         <button 
           className={filter === 'all'? 'active' : ''}
@@ -78,10 +91,9 @@ function App() {
         >Completed</button>
       </div>
 
-      {/* TaskList Logic */}
       <div className="task-list">
         {filteredTasks.length === 0? (
-          <p>No tasks found</p>
+          <p className="empty">No tasks found</p>
         ) : (
           filteredTasks.map(task => (
             <div key={task.id} className={`task-item ${task.completed? 'done' : ''}`}>
