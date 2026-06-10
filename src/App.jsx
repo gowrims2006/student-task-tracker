@@ -1,128 +1,122 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
+import { useState, useEffect } from 'react'
+import './App.css'
+
+function App() {
+  // Step 8: Load from Local Storage
+  const [tasks, setTasks] = useState(() => {
+    try {
+      const saved = localStorage.getItem('studentTasks')
+      return saved? JSON.parse(saved) : []
+    } catch {
+      return []
+    }
+  })
+  
+  const [input, setInput] = useState('')
+  const [filter, setFilter] = useState('all')
+  
+  // Bonus: Dark Mode - Load from storage
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem('theme') === 'dark'
+  })
+
+  // Step 9: Save tasks to Local Storage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('studentTasks', JSON.stringify(tasks))
+  }, [tasks])
+
+  // Bonus: Save theme + apply to body
+  useEffect(() => {
+    localStorage.setItem('theme', darkMode? 'dark' : 'light')
+    document.body.className = darkMode? 'dark' : 'light'
+  }, [darkMode])
+
+  const addTask = () => {
+    if(input.trim() === '') return
+    setTasks([...tasks, { 
+      id: Date.now(), 
+      text: input.trim(), 
+      completed: false 
+    }])
+    setInput('')
+  }
+
+  const deleteTask = (id) => {
+    setTasks(tasks.filter(task => task.id!== id))
+  }
+
+  const toggleTask = (id) => {
+    setTasks(tasks.map(task => 
+      task.id === id? {...task, completed:!task.completed } : task
+    ))
+  }
+
+  const filteredTasks = tasks.filter(task => {
+    if(filter === 'completed') return task.completed
+    if(filter === 'pending') return!task.completed
+    return true
+  })
+
+  return (
+    <div className={`app ${darkMode? 'dark' : 'light'}`}>
+      <div className="header">
+        <h1>📚 Student Task Tracker</h1>
+        <button 
+          className="theme-toggle"
+          onClick={() => setDarkMode(!darkMode)}
+        >
+          {darkMode? '☀️ Light' : '🌙 Dark'}
+        </button>
+      </div>
+      
+      <div className="task-form">
+        <input 
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && addTask()}
+          placeholder="Enter new task..."
+        />
+        <button onClick={addTask}>Add Task</button>
+      </div>
+
+      <div className="filters">
+        <button 
+          className={filter === 'all'? 'active' : ''}
+          onClick={() => setFilter('all')}
+        >All</button>
+        <button 
+          className={filter === 'pending'? 'active' : ''}
+          onClick={() => setFilter('pending')}
+        >Pending</button>
+        <button 
+          className={filter === 'completed'? 'active' : ''}
+          onClick={() => setFilter('completed')}
+        >Completed</button>
+      </div>
+
+      <div className="task-list">
+        {filteredTasks.length === 0? (
+          <p>No tasks found</p>
+        ) : (
+          filteredTasks.map(task => (
+            <div key={task.id} className={`task-item ${task.completed? 'done' : ''}`}>
+              <input 
+                type="checkbox"
+                checked={task.completed}
+                onChange={() => toggleTask(task.id)}
+              />
+              <span>{task.text}</span>
+              <button onClick={() => deleteTask(task.id)}>❌</button>
+            </div>
+          ))
+        )}
+      </div>
+
+      <p style={{textAlign: 'center', marginTop: '20px'}}>
+        Total: {tasks.length} | Completed: {tasks.filter(t => t.completed).length}
+      </p>
+    </div>
+  )
 }
 
-body.light {
-  background: #f0f0f0;
-}
-
-body.dark {
-  background: #121212;
-}
-
-.app {
-  max-width: 500px;
-  margin: 40px auto;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.app.light {
-  background: white;
-  color: #333;
-}
-
-.app.dark {
-  background: #1e1e1e;
-  color: #f5f5f5;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.theme-toggle {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background: #2196F3;
-  color: white;
-}
-
-.task-form {
-  display: flex;
-  gap: 10px;
-  margin: 20px 0;
-}
-
-.task-form input {
-  flex: 1;
-  padding: 10px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-}
-
-.app.dark.task-form input {
-  background: #2d2d2d;
-  border-color: #555;
-  color: white;
-}
-
-.task-form button {
-  padding: 10px 20px;
-  background: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-}
-
-.filters {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin: 20px 0;
-}
-
-.filters button {
-  padding: 8px 16px;
-  border: 1px solid #ccc;
-  background: white;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.app.dark.filters button {
-  background: #2d2d2d;
-  color: white;
-  border-color: #555;
-}
-
-.filters button.active {
-  background: #2196F3;
-  color: white;
-}
-
-.task-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px;
-  margin: 8px 0;
-  border-radius: 5px;
-}
-
-.app.light.task-item {
-  background: #f5f5f5;
-}
-
-.app.dark.task-item {
-  background: #2d2d2d;
-}
-
-.task-item.done span {
-  text-decoration: line-through;
-  opacity: 0.6;
-}
-
-.task-item button {
-  margin-left: auto;
-  background: #ff4444;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 3px;
-}
+export default App
