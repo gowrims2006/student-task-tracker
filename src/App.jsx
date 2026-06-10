@@ -51,7 +51,7 @@ function App() {
       <div className="header">
         <h1>📚 Student Task Tracker</h1>
         <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
-          {darkMode? '☀️ Light' : '🌙 Dark'}
+          {darkMode? '☀️ light' : '🌙 Dark'}
         </button>
       </div>
       
