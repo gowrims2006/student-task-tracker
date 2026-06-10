@@ -1,12 +1,64 @@
+body {
+  margin: 0;
+  transition: background 0.3s;
+}
+
+body.light {
+  background: #f5f5f5;
+}
+
+body.dark {
+  background: #1a1a1a;
+}
+
 .app {
   max-width: 500px;
   margin: 40px auto;
   padding: 20px;
   font-family: Arial, sans-serif;
+  border-radius: 10px;
+  transition: all 0.3s;
+}
+
+.app.light {
+  background: white;
+  color: #333;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.app.dark {
+  background: #2d2d2d;
+  color: #f5f5f5;
+  box-shadow: 0 2px 10px rgba(255,255,255,0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 h1 {
-  text-align: center;
+  margin: 0;
+  font-size: 24px;
+}
+
+.theme-toggle {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.app.light.theme-toggle {
+  background: #333;
+  color: white;
+}
+
+.app.dark.theme-toggle {
+  background: #f5f5f5;
   color: #333;
 }
 
@@ -19,8 +71,19 @@ h1 {
 .task-form input {
   flex: 1;
   padding: 10px;
-  border: 2px solid #ddd;
+  border: 2px solid;
   border-radius: 5px;
+}
+
+.app.light.task-form input {
+  border-color: #ddd;
+  background: white;
+}
+
+.app.dark.task-form input {
+  border-color: #555;
+  background: #1a1a1a;
+  color: white;
 }
 
 .task-form button {
@@ -41,19 +104,27 @@ h1 {
 
 .filters button {
   padding: 8px 16px;
-  border: 1px solid #ddd;
-  background: white;
+  border: 1px solid;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.app.light.filters button {
+  border-color: #ddd;
+  background: white;
+  color: #333;
+}
+
+.app.dark.filters button {
+  border-color: #555;
+  background: #1a1a1a;
+  color: #f5f5f5;
 }
 
 .filters button.active {
   background: #2196F3;
   color: white;
-}
-
-.task-list {
-  margin: 20px 0;
+  border-color: #2196F3;
 }
 
 .task-item {
@@ -62,8 +133,15 @@ h1 {
   gap: 10px;
   padding: 12px;
   margin: 8px 0;
-  background: #f5f5f5;
   border-radius: 5px;
+}
+
+.app.light.task-item {
+  background: #f5f5f5;
+}
+
+.app.dark.task-item {
+  background: #1a1a1a;
 }
 
 .task-item.done span {
@@ -81,8 +159,15 @@ h1 {
   cursor: pointer;
 }
 
-.stats {
+.stats,.empty {
   text-align: center;
-  color: #666;
   margin-top: 20px;
+}
+
+.app.light.stats,.app.light.empty {
+  color: #666;
+}
+
+.app.dark.stats,.app.dark.empty {
+  color: #aaa;
 }
