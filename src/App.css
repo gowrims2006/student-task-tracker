@@ -1,128 +1,324 @@
-body {
+/* Global Styles */
+* {
   margin: 0;
-  font-family: Arial, sans-serif;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: all 0.3s ease;
+}
+
+/* Light Mode - Light Colour */
 body.light {
-  background: #f0f0f0;
+  background: #f5f7fa;
+  color: #1a1a1a;
 }
 
+/* Dark Mode - Black Colour */
 body.dark {
-  background: #121212;
+  background: #000000;
+  color: #ffffff;
 }
 
+/* Main App Container */
 .app {
-  max-width: 500px;
-  margin: 40px auto;
+  max-width: 600px;
+  margin: 0 auto;
   padding: 20px;
-  border-radius: 10px;
+  min-height: 100vh;
+  transition: all 0.3s ease;
 }
 
 .app.light {
-  background: white;
-  color: #333;
+  background: #ffffff;
 }
 
 .app.dark {
-  background: #1e1e1e;
-  color: #f5f5f5;
+  background: #000000;
 }
 
+/* Header */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid;
 }
 
+.app.light .header {
+  border-color: #e0e0e0;
+}
+
+.app.dark .header {
+  border-color: #333333;
+}
+
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.app.light .header h1 {
+  color: #2563eb;
+}
+
+.app.dark .header h1 {
+  color: #60a5fa;
+}
+
+/* Theme Toggle Button */
 .theme-toggle {
-  padding: 8px 16px;
+  padding: 10px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  background: #2196F3;
-  color: white;
+  transition: all 0.3s ease;
 }
 
+.app.light .theme-toggle {
+  background: #1f2937;
+  color: #ffffff;
+}
+
+.app.dark .theme-toggle {
+  background: #fbbf24;
+  color: #000000;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.05);
+}
+
+/* Task Form */
 .task-form {
   display: flex;
   gap: 10px;
-  margin: 20px 0;
+  margin-bottom: 25px;
 }
 
 .task-form input {
   flex: 1;
-  padding: 10px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
+  padding: 12px 16px;
+  border: 2px solid;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
 }
 
-.app.dark.task-form input {
-  background: #2d2d2d;
-  border-color: #555;
-  color: white;
+.app.light .task-form input {
+  background: #ffffff;
+  border-color: #d1d5db;
+  color: #000000;
+}
+
+.app.dark .task-form input {
+  background: #1a1a1a;
+  border-color: #374151;
+  color: #ffffff;
+}
+
+.task-form input:focus {
+  border-color: #2563eb;
 }
 
 .task-form button {
-  padding: 10px 20px;
-  background: #4CAF50;
-  color: white;
+  padding: 12px 24px;
+  background: #2563eb;
+  color: #ffffff;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
+.task-form button:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+/* Filter Buttons */
 .filters {
   display: flex;
   gap: 10px;
+  margin-bottom: 25px;
   justify-content: center;
-  margin: 20px 0;
 }
 
 .filters button {
-  padding: 8px 16px;
-  border: 1px solid #ccc;
-  background: white;
-  border-radius: 5px;
+  padding: 10px 20px;
+  border: 2px solid;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
 }
 
-.app.dark.filters button {
-  background: #2d2d2d;
-  color: white;
-  border-color: #555;
+.app.light .filters button {
+  border-color: #d1d5db;
+  color: #6b7280;
+}
+
+.app.dark .filters button {
+  border-color: #374151;
+  color: #9ca3af;
+}
+
+.filters button:hover {
+  transform: scale(1.05);
 }
 
 .filters button.active {
-  background: #2196F3;
-  color: white;
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
 }
 
+/* Task List */
+.task-list {
+  margin-bottom: 20px;
+}
+
+.task-list p {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 16px;
+  opacity: 0.6;
+}
+
+/* Task Item */
 .task-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px;
-  margin: 8px 0;
-  border-radius: 5px;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  animation: slideIn 0.3s ease;
 }
 
-.app.light.task-item {
-  background: #f5f5f5;
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.app.dark.task-item {
-  background: #2d2d2d;
+.app.light .task-item {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.app.dark .task-item {
+  background: #111111;
+  border: 1px solid #2a2a2a;
+}
+
+.task-item:hover {
+  transform: translateX(5px);
+}
+
+.app.light .task-item:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.app.dark .task-item:hover {
+  border-color: #404040;
+}
+
+/* Checkbox */
+.task-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #2563eb;
+}
+
+/* Task Text */
+.task-item span {
+  flex: 1;
+  font-size: 16px;
+  word-break: break-word;
 }
 
 .task-item.done span {
   text-decoration: line-through;
+  opacity: 0.5;
+}
+
+/* Delete Button */
+.task-item button {
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
   opacity: 0.6;
 }
 
-.task-item button {
-  margin-left: auto;
-  background: #ff4444;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 3px;
+.task-item button:hover {
+  opacity: 1;
+  background: rgba(239, 68, 68, 0.1);
+  transform: scale(1.2);
+}
+
+/* Stats */
+.stats {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border-top: 2px solid;
+}
+
+.app.light .stats {
+  border-color: #e5e7eb;
+  color: #6b7280;
+}
+
+.app.dark .stats {
+  border-color: #2a2a2a;
+  color: #9ca3af;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .app {
+    padding: 15px;
+  }
+
+  .header h1 {
+    font-size: 22px;
+  }
+
+  .task-form {
+    flex-direction: column;
+  }
+
+  .task-form button {
+    width: 100%;
+  }
+
+  .filters {
+    flex-wrap: wrap;
+  }
 }
