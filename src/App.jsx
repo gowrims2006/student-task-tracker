@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import StatsCard from './components/StatsCard';
+import Button from './components/Button';
 
 function App() {
   // STEP 1: Initial state direct localStorage il ninnu edukkuka
@@ -84,6 +86,12 @@ function App() {
           <p style={{ fontSize: '18px', color: '#cbd5e1', margin: '0' }}>
             Learn React
           </p>
+        </div>
+
+        <div className="stats-container">
+          <StatsCard title="Total Tasks" count={tasks.length} />
+          <StatsCard title="Completed Tasks" count={tasks.filter(t => t.completed).length} />
+          <StatsCard title="Pending Tasks" count={tasks.filter(t => !t.completed).length} />
         </div>
 
         <div style={{ textAlign: 'center', marginBottom: '24px', fontSize: '20px', color: '#93c5fd' }}>
@@ -226,4 +234,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;    

@@ -3,5 +3,5 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: process.env.VERCEL ? '/' : '/student-task-tracker/',
+  // base: '/student-task-tracker/'  ← Comment cheyyuka
 })
